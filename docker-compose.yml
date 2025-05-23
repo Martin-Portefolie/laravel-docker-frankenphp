@@ -1,0 +1,33 @@
+services:
+    laravel:
+        build: .
+        container_name: laravel-app
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - .:/app
+            - caddy_data:/data
+            - caddy_config:/config
+        environment:
+            SERVER_NAME: ${SERVER_NAME:-localhost}
+            APP_ENV: ${APP_ENV:-dev}
+        tty: true
+
+    db:
+        image: mariadb:11
+        restart: always
+        environment:
+            MYSQL_DATABASE: db_name
+            MYSQL_ROOT_PASSWORD: db_pass
+            MYSQL_USER: db_user
+            MYSQL_PASSWORD: db_pass
+        volumes:
+            - db_data:/var/lib/mysql
+
+
+volumes:
+    caddy_data:
+    caddy_config:
+    db_data:
+
